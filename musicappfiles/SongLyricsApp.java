@@ -1,20 +1,33 @@
 package musicappfiles;
 
 import java.awt.*;
-import java.awt.image.BufferedImage;
+// import java.awt.image.BufferedImage;
 
 import javax.swing.*;
-import javax.imageio.ImageIO; 
+// import javax.imageio.ImageIO; 
   
-import java.io.*;  
+// import java.io.*;  
+
+// import musicappfiles.Song;
  
+// WHY IS THE ADDED THING EMPY COMPONENT ??? WHY
 
 import com.formdev.flatlaf.FlatLightLaf;
 
 public class SongLyricsApp extends JFrame {
-  public SongLyricsApp() {
+  private static SongLyricsApp firstInstance = null;
+
+  private SongLyricsApp() {
     FlatLightLaf.setup();
 
+    // =======================Song Object Instantiation========================
+    Song song1 = new always();
+    Song song2 = new balisong();
+    Song song3 = new just();
+    Song song4 = new lover();
+    Song song5 = new those(); 
+
+    // ============================= MAIN LAYOUT ==============================
     JPanel songLyricsP = new JPanel();
     JPanel songListnDetailsP = new JPanel(new BorderLayout());
     JPanel songStyleP = new JPanel(new BorderLayout());
@@ -33,20 +46,20 @@ public class SongLyricsApp extends JFrame {
     JPanel songDetailsP = new JPanel(new BorderLayout());
 
     JPanel songInfoP = new JPanel(new BorderLayout());
-    JLabel songNameL = new JLabel("tester song name");
-    JLabel songArtistL = new JLabel("tester song artist");
+    JLabel songNameL = new JLabel("tester name");
+    JLabel songArtistL = new JLabel("tester artist");
 
     songInfoP.add(songNameL, BorderLayout.CENTER);
     songInfoP.add(songArtistL, BorderLayout.SOUTH);
 
     JPanel songPhotoP = new JPanel();
-    songPhotoP.add(new uploadImg("musicappfiles/images/editedAlways.png"));
+    // songPhotoP.add("tester image");
 
     songDetailsP.add(songInfoP, BorderLayout.CENTER);
     songDetailsP.add(songPhotoP, BorderLayout.WEST);
 
     JPanel songListP = new JPanel();
-    String[] songTitleS = new String[] { "Always Be My Baby", "Just The Same", "Those Eyes", "Lover", "Balisong" };
+    String[] songTitleS = new String[] {song1.getSongName(), song2.getSongName(), song3.getSongName(), song4.getSongName(), song5.getSongName()};
 
     JComboBox<String> songListCB = new JComboBox<>(songTitleS);
 
@@ -76,7 +89,6 @@ public class SongLyricsApp extends JFrame {
     songStyleP.add(songPlaylistP, BorderLayout.CENTER);
     songStyleP.add(songStylingP, BorderLayout.EAST);
     // ============================ Setup the Frame ============================
-
     // ============================ test visibilty of panels
     setBackground(Color.black);
     songLyricsP.setBackground(Color.red);
@@ -99,35 +111,19 @@ public class SongLyricsApp extends JFrame {
     setVisible(true);
   }
 
-  class uploadImg extends Component {  
-    BufferedImage img;
-
-    public void paint(Graphics p) {  
-      p.drawImage(img, 0, 0, null);  
+  // ensures that only one instance of the songlyricsapp will ever be created
+  public static SongLyricsApp getInstance() {
+    if(firstInstance == null) {
+      firstInstance = new SongLyricsApp();
     }
 
-    public uploadImg(String filepath) {  
-      try {  
-        img = ImageIO.read(new File(filepath));  
-      }   
-      catch (IOException ex) {  
-        ex.printStackTrace();  
-      }  
-    }
-        
-    public Dimension getPreferredSize() {
-      if (img == null) {
-           return new Dimension(100,100);
-      } else {
-         return new Dimension(img.getWidth(null), img.getHeight(null));
-      }
-    }
+    return firstInstance;
   }
 
   public static void main(String[] args) {
-    // Song alexandra = new Song("test", "test", 0, 1);
-    // RESUME HERE... modify the line below; put into a var
-    new SongLyricsApp();
+    SongLyricsApp.getInstance();
+    
+    
   }
 }
 
