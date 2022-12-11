@@ -4,13 +4,15 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.*;
 import javax.imageio.ImageIO;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 
 public abstract class Song {
   private String songName;
   private String artistName;
-  private String songImgFilepath;
   public uploadImg songImage;
-  // private int lyrics; 
+  public String songLyrics; 
 
   public String getSongName() {
     return songName;
@@ -26,15 +28,12 @@ public abstract class Song {
     artistName = newArtist;
   }
 
-  public String getImgFilepath() {
-    return songImgFilepath;
-  }
-  public void setImgFilepath(String newFilePath) {
-    songImgFilepath = newFilePath;
-  }
-
   public uploadImg getSongImage() {
     return songImage;
+  }  
+
+  public String getSongLyrics() {
+    return songLyrics;
   }  
 
   class uploadImg extends Component {  
@@ -62,6 +61,24 @@ public abstract class Song {
       } else {
           return new Dimension(img.getWidth(null), img.getHeight(null));
       }
+    }
+  }
+
+  public class uploadFile {
+    String str;
+    
+    public uploadFile(String pathfile) {
+      try {
+        Path fileName = Path.of(pathfile);
+        str = Files.readString(fileName);
+      } 
+      catch (IOException ex) {  
+        ex.printStackTrace();  
+      }  
+    }
+    
+    public String returnStr(){
+      return str;
     }
   }
 }

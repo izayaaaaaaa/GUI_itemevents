@@ -26,7 +26,7 @@ public class SongLyricsApp extends JFrame {
 
     JTextArea songLyricsTF;
     // default lyrics is the first song
-    String lyrics = "test";
+    String lyrics = song1.getSongLyrics();
 
     JPanel songDetailsP, songInfoP, songPhotoP, songListP;
     JLabel songNameL, songArtistL;
@@ -55,8 +55,8 @@ public class SongLyricsApp extends JFrame {
     songDetailsP = new JPanel(new BorderLayout());
 
     songInfoP = new JPanel(new BorderLayout());
-    songNameL = new JLabel("tester name");
-    songArtistL = new JLabel("tester artist");
+    songNameL = new JLabel(song1.getSongName());
+    songArtistL = new JLabel(song1.getArtistName());
 
     songInfoP.add(songNameL, BorderLayout.CENTER);
     songInfoP.add(songArtistL, BorderLayout.SOUTH);
@@ -77,11 +77,30 @@ public class SongLyricsApp extends JFrame {
       @Override
       public void itemStateChanged(ItemEvent e) {
         if(e.getStateChange() == ItemEvent.SELECTED) {
-          if(songListCB.getSelectedItem() == song5.getSongName()) {
-            songLyricsTF.setText((String) "daskldjaslkdjalskjdalsk");
+          if(songListCB.getSelectedItem() == song2.getSongName()) {
+            songNameL.setText(song2.getSongName());
+            songArtistL.setText(song2.getArtistName());
+            songLyricsTF.setText(song2.getSongLyrics());
+          }
+          else if(songListCB.getSelectedItem() == song3.getSongName()) {
+            songNameL.setText(song3.getSongName());
+            songArtistL.setText(song3.getArtistName());
+            songLyricsTF.setText(song3.getSongLyrics());
+          }
+          else if(songListCB.getSelectedItem() == song4.getSongName()) {
+            songNameL.setText(song4.getSongName());
+            songArtistL.setText(song4.getArtistName());
+            songLyricsTF.setText(song4.getSongLyrics());
+          }
+          else if(songListCB.getSelectedItem() == song5.getSongName()) {
+            songNameL.setText(song5.getSongName());
+            songArtistL.setText(song5.getArtistName());
+            songLyricsTF.setText(song5.getSongLyrics());
           }
           else {
-            songLyricsTF.setText((String) "hatdog");
+            songNameL.setText(song1.getSongName());
+            songArtistL.setText(song1.getArtistName());
+            songLyricsTF.setText(song1.getSongLyrics());
           }
         } 
       }

@@ -4,7 +4,7 @@ public class balisong extends Song {
   public balisong(){
     setSongName("Balisong");
     setArtistName("Rivermaya");
-    setImgFilepath("musicappfiles/images/editedBalisong.png");
-    songImage = new balisong.uploadImg(getImgFilepath());
+    songImage = new uploadImg("musicappfiles/images/editedBalisong.png");
+    songLyrics = new uploadFile("musicappfiles/lyrics/balisong.txt").returnStr();
   }
 }

@@ -4,7 +4,7 @@ public class just extends Song {
   public just(){
     setSongName("Just the Same");
     setArtistName("Bruno Major");
-    setImgFilepath("musicappfiles/images/editedJust.png");
-    songImage = new just.uploadImg(getImgFilepath());
+    songImage = new uploadImg("musicappfiles/images/editedJust.png");
+    songLyrics = new uploadFile("musicappfiles/lyrics/just.txt").returnStr();
   }
 }
