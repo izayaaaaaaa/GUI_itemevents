@@ -9,8 +9,6 @@ import com.formdev.flatlaf.FlatLightLaf;
 
 public class SongLyricsApp extends JFrame {
   private static SongLyricsApp firstInstance = null;
-  
-
 
   private SongLyricsApp() {
     FlatLightLaf.setup();
@@ -22,52 +20,46 @@ public class SongLyricsApp extends JFrame {
     Song song4 = new lover();
     Song song5 = new those(); 
 
-    JPanel songLyricsP, songListnDetailsP, songStyleP;
-
-    JTextArea songLyricsTF;
-    // default lyrics is the first song
-    String lyrics = song1.getSongLyrics();
-
-    JPanel songDetailsP, songInfoP, songPhotoP, songListP;
-    JLabel songNameL, songArtistL;
-    String [] songTitleStr;
-
-    JPanel songPlaylistP, songStylingP;
-    JLabel playlistName, playlistImg;
-    JButton fontSize, fontStyle;
-
     // ============================= MAIN LAYOUT ==============================
-    songLyricsP = new JPanel();
-    songListnDetailsP = new JPanel(new BorderLayout());
-    songStyleP = new JPanel(new BorderLayout());
+    JPanel songLyricsP = new JPanel();
+    JPanel songListnDetailsP = new JPanel(new BorderLayout());
+    JPanel songStyleP = new JPanel(new BorderLayout());
 
     // ============================Song Lyrics Panel============================
-    songLyricsTF = new JTextArea(lyrics, 35, 50);
+    String lyrics = song1.getSongLyrics();
+    JTextArea songLyricsTF = new JTextArea(lyrics, 35, 50);
 
     // set fixed size of panel
     // transparent song lyrics bg?
     // variable based display text of text area
+    // SHOULD NOT BE EDITABLE
 
     songLyricsP.add(songLyricsTF);
 
     // =======================Song List and Detail Panel========================
     // song details panel (CENTER)
-    songDetailsP = new JPanel(new BorderLayout());
+    JPanel songDetailsP = new JPanel(new BorderLayout());
 
-    songInfoP = new JPanel(new BorderLayout());
-    songNameL = new JLabel(song1.getSongName());
-    songArtistL = new JLabel(song1.getArtistName());
+    JPanel songInfoP = new JPanel(new BorderLayout());
+    JLabel songNameL = new JLabel(song1.getSongName());
+    JLabel songArtistL = new JLabel(song1.getArtistName());
 
     songInfoP.add(songNameL, BorderLayout.CENTER);
     songInfoP.add(songArtistL, BorderLayout.SOUTH);
 
-    songPhotoP = new JPanel();
+    JPanel songPhotoP = new JPanel();
+    songPhotoP.add(song1.songImage);
+    // how to change the image dependent on combobox selected
+    // resume here!!
+    // change the parameter for the uploadimg instantiation???
+    //  orrr use only one variable (perhaps static) for the songimage var of Song abstract class 
+    //      then change the filepath dependent on the combobox item selected
 
     songDetailsP.add(songInfoP, BorderLayout.CENTER);
     songDetailsP.add(songPhotoP, BorderLayout.WEST);
 
-    songListP = new JPanel();
-    songTitleStr = new String[] {song1.getSongName(), song2.getSongName(), song3.getSongName(), song4.getSongName(), song5.getSongName()};
+    JPanel songListP = new JPanel();
+    String [] songTitleStr = new String[] {song1.getSongName(), song2.getSongName(), song3.getSongName(), song4.getSongName(), song5.getSongName()};
 
     JComboBox<String> songListCB = new JComboBox<>(songTitleStr);
 
@@ -110,22 +102,47 @@ public class SongLyricsApp extends JFrame {
     songListnDetailsP.add(songListP, BorderLayout.NORTH);
 
     // ========================Additional Styling Panel========================
-    songPlaylistP = new JPanel(new BorderLayout());
-    playlistName = new JLabel("tester playlist name");
-    playlistImg = new JLabel("tester playlist img");
-    // include a song playlist title with picture
+    JPanel songPlaylistP = new JPanel(new BorderLayout());
+    // create panel for desc and playlist name with name as center and desc as south
+    JLabel playlistName = new JLabel("Always");
+    JLabel playlistImg = new JLabel("tester playlist img"); // use the icon component?
+    // JLabel playlistDesc = new JLabel("Created by: Francyn Macadangdang");
 
     songPlaylistP.add(playlistName, BorderLayout.CENTER);
     songPlaylistP.add(playlistImg, BorderLayout.WEST);
+    // songPlaylistP.add(playlistDesc, BorderLayout.SOUTH);
 
-    songStylingP = new JPanel();
-    fontSize = new JButton("tester font size");
-    fontStyle = new JButton("tester font style");
-    // pop up box through an icon/button
-    // figure out this part!!!
+    JPanel songStylingP = new JPanel();
+    // ADD THE STUPID BUTTON EVENT LISTENERS
 
-    songStylingP.add(fontSize);
-    songStylingP.add(fontStyle);
+    JPanel radioBoxP = new JPanel(new GridLayout(0, 1));
+    JLabel fontSizeL = new JLabel("Font Size"); 
+    ButtonGroup fontSizeGrp = new ButtonGroup();
+    JRadioButton smallButton = new JRadioButton("Small");
+    JRadioButton mediumButton = new JRadioButton("Medium");
+    JRadioButton largeButton = new JRadioButton("Large");
+    
+    fontSizeGrp.add(smallButton);
+    fontSizeGrp.add(mediumButton);
+    fontSizeGrp.add(largeButton);
+    radioBoxP.add(fontSizeL);
+    radioBoxP.add(smallButton);
+    radioBoxP.add(mediumButton);
+    radioBoxP.add(largeButton); 
+
+    JPanel checkBoxP = new JPanel(new GridLayout(0, 1)); 
+    JLabel fontStyleL = new JLabel("Font Style");
+    JCheckBox normalButton = new JCheckBox("Normal");
+    JCheckBox boldButton = new JCheckBox("Bold");
+    JCheckBox italicButton = new JCheckBox("Italic");
+
+    checkBoxP.add(fontStyleL);
+    checkBoxP.add(normalButton);
+    checkBoxP.add(boldButton);
+    checkBoxP.add(italicButton);
+
+    songStylingP.add(radioBoxP);
+    songStylingP.add(checkBoxP);
 
     songStyleP.add(songPlaylistP, BorderLayout.CENTER);
     songStyleP.add(songStylingP, BorderLayout.EAST);
@@ -139,7 +156,6 @@ public class SongLyricsApp extends JFrame {
     songListP.setBackground(Color.black);
 
     songStyleP.setBackground(Color.green);
-
     // test visibilty of panels ============================
 
     add(songLyricsP, BorderLayout.CENTER);
