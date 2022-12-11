@@ -1,39 +1,48 @@
 package musicappfiles;
 
 import java.awt.*;
-// import java.awt.image.BufferedImage;
+import java.awt.event.*;
 
 import javax.swing.*;
-// import javax.imageio.ImageIO; 
   
-// import java.io.*;  
-
-// import musicappfiles.Song;
- 
-// WHY IS THE ADDED THING EMPY COMPONENT ??? WHY
-
 import com.formdev.flatlaf.FlatLightLaf;
 
 public class SongLyricsApp extends JFrame {
   private static SongLyricsApp firstInstance = null;
+  
+
 
   private SongLyricsApp() {
     FlatLightLaf.setup();
 
-    // =======================Song Object Instantiation========================
+    // =============================Instantiation==============================
     Song song1 = new always();
     Song song2 = new balisong();
     Song song3 = new just();
     Song song4 = new lover();
     Song song5 = new those(); 
 
+    JPanel songLyricsP, songListnDetailsP, songStyleP;
+
+    JTextArea songLyricsTF;
+    // default lyrics is the first song
+    String lyrics = "test";
+
+    JPanel songDetailsP, songInfoP, songPhotoP, songListP;
+    JLabel songNameL, songArtistL;
+    String [] songTitleStr;
+
+    JPanel songPlaylistP, songStylingP;
+    JLabel playlistName, playlistImg;
+    JButton fontSize, fontStyle;
+
     // ============================= MAIN LAYOUT ==============================
-    JPanel songLyricsP = new JPanel();
-    JPanel songListnDetailsP = new JPanel(new BorderLayout());
-    JPanel songStyleP = new JPanel(new BorderLayout());
+    songLyricsP = new JPanel();
+    songListnDetailsP = new JPanel(new BorderLayout());
+    songStyleP = new JPanel(new BorderLayout());
 
     // ============================Song Lyrics Panel============================
-    JTextArea songLyricsTF = new JTextArea("test", 35, 50);
+    songLyricsTF = new JTextArea(lyrics, 35, 50);
 
     // set fixed size of panel
     // transparent song lyrics bg?
@@ -43,43 +52,56 @@ public class SongLyricsApp extends JFrame {
 
     // =======================Song List and Detail Panel========================
     // song details panel (CENTER)
-    JPanel songDetailsP = new JPanel(new BorderLayout());
+    songDetailsP = new JPanel(new BorderLayout());
 
-    JPanel songInfoP = new JPanel(new BorderLayout());
-    JLabel songNameL = new JLabel("tester name");
-    JLabel songArtistL = new JLabel("tester artist");
+    songInfoP = new JPanel(new BorderLayout());
+    songNameL = new JLabel("tester name");
+    songArtistL = new JLabel("tester artist");
 
     songInfoP.add(songNameL, BorderLayout.CENTER);
     songInfoP.add(songArtistL, BorderLayout.SOUTH);
 
-    JPanel songPhotoP = new JPanel();
-    // songPhotoP.add("tester image");
+    songPhotoP = new JPanel();
 
     songDetailsP.add(songInfoP, BorderLayout.CENTER);
     songDetailsP.add(songPhotoP, BorderLayout.WEST);
 
-    JPanel songListP = new JPanel();
-    String[] songTitleS = new String[] {song1.getSongName(), song2.getSongName(), song3.getSongName(), song4.getSongName(), song5.getSongName()};
+    songListP = new JPanel();
+    songTitleStr = new String[] {song1.getSongName(), song2.getSongName(), song3.getSongName(), song4.getSongName(), song5.getSongName()};
 
-    JComboBox<String> songListCB = new JComboBox<>(songTitleS);
+    JComboBox<String> songListCB = new JComboBox<>(songTitleStr);
 
     songListP.add(songListCB);
+
+    songListCB.addItemListener(new ItemListener() {
+      @Override
+      public void itemStateChanged(ItemEvent e) {
+        if(e.getStateChange() == ItemEvent.SELECTED) {
+          if(songListCB.getSelectedItem() == song5.getSongName()) {
+            songLyricsTF.setText((String) "daskldjaslkdjalskjdalsk");
+          }
+          else {
+            songLyricsTF.setText((String) "hatdog");
+          }
+        } 
+      }
+    });
 
     songListnDetailsP.add(songDetailsP, BorderLayout.CENTER);
     songListnDetailsP.add(songListP, BorderLayout.NORTH);
 
     // ========================Additional Styling Panel========================
-    JPanel songPlaylistP = new JPanel(new BorderLayout());
-    JLabel playlistName = new JLabel("tester playlist name");
-    JLabel playlistImg = new JLabel("tester playlist img");
+    songPlaylistP = new JPanel(new BorderLayout());
+    playlistName = new JLabel("tester playlist name");
+    playlistImg = new JLabel("tester playlist img");
     // include a song playlist title with picture
 
     songPlaylistP.add(playlistName, BorderLayout.CENTER);
     songPlaylistP.add(playlistImg, BorderLayout.WEST);
 
-    JPanel songStylingP = new JPanel();
-    JButton fontSize = new JButton("tester font size");
-    JButton fontStyle = new JButton("tester font style");
+    songStylingP = new JPanel();
+    fontSize = new JButton("tester font size");
+    fontStyle = new JButton("tester font style");
     // pop up box through an icon/button
     // figure out this part!!!
 
@@ -122,8 +144,6 @@ public class SongLyricsApp extends JFrame {
 
   public static void main(String[] args) {
     SongLyricsApp.getInstance();
-    
-    
   }
 }
 

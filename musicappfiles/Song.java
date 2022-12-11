@@ -12,8 +12,6 @@ public abstract class Song {
   public uploadImg songImage;
   // private int lyrics; 
 
-  // get lyrics how?
-
   public String getSongName() {
     return songName;
   }
@@ -34,7 +32,6 @@ public abstract class Song {
   public void setImgFilepath(String newFilePath) {
     songImgFilepath = newFilePath;
   }
-  
 
   public uploadImg getSongImage() {
     return songImage;
