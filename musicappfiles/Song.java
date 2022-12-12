@@ -62,7 +62,7 @@ public abstract class Song {
           return new Dimension(img.getWidth(null), img.getHeight(null));
       }
     }
-  }
+  } // uploadImg class
 
   public class uploadFile {
     String str;
@@ -80,5 +80,5 @@ public abstract class Song {
     public String returnStr(){
       return str;
     }
-  }
-}
+  } // uploadFile class
+} // song abstract class

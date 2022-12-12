@@ -1,8 +1,11 @@
+// IMAGES AND TEXT FILES AREN'T RENDERING ON NETBEANS???
+// FIX THE FONTS FOR THE RADIO LISTENERS
+// FIX THE OVERALL STYLE/UI
+// FIX THE PLAYLIST IMAGE AND THE SONG IMAGE THAT SHOULD BE CHANGING ACCORDINGLY
 package musicappfiles;
 
 import java.awt.*;
 import java.awt.event.*;
-
 import javax.swing.*;
   
 import com.formdev.flatlaf.FlatLightLaf;
@@ -63,8 +66,6 @@ public class SongLyricsApp extends JFrame {
 
     JComboBox<String> songListCB = new JComboBox<>(songTitleStr);
 
-    songListP.add(songListCB);
-
     songListCB.addItemListener(new ItemListener() {
       @Override
       public void itemStateChanged(ItemEvent e) {
@@ -96,32 +97,57 @@ public class SongLyricsApp extends JFrame {
           }
         } 
       }
-    });
+    }); // songListCB item listener
+
+    songListP.add(songListCB);
 
     songListnDetailsP.add(songDetailsP, BorderLayout.CENTER);
     songListnDetailsP.add(songListP, BorderLayout.NORTH);
 
     // ========================Additional Styling Panel========================
     JPanel songPlaylistP = new JPanel(new BorderLayout());
-    // create panel for desc and playlist name with name as center and desc as south
+    JPanel playlistDetailsP = new JPanel(new BorderLayout());
     JLabel playlistName = new JLabel("Always");
-    JLabel playlistImg = new JLabel("tester playlist img"); // use the icon component?
-    // JLabel playlistDesc = new JLabel("Created by: Francyn Macadangdang");
+    JLabel playlistDesc = new JLabel("Created by: Francyn Macadangdang");
+    
+    playlistDetailsP.add(playlistName, BorderLayout.CENTER);
+    playlistDetailsP.add(playlistDesc, BorderLayout.SOUTH);
 
-    songPlaylistP.add(playlistName, BorderLayout.CENTER);
+    JLabel playlistImg = new JLabel("tester playlist img"); // use the icon component?
+
+    songPlaylistP.add(playlistDetailsP, BorderLayout.CENTER);
     songPlaylistP.add(playlistImg, BorderLayout.WEST);
-    // songPlaylistP.add(playlistDesc, BorderLayout.SOUTH);
 
     JPanel songStylingP = new JPanel();
     // ADD THE STUPID BUTTON EVENT LISTENERS
-
     JPanel radioBoxP = new JPanel(new GridLayout(0, 1));
     JLabel fontSizeL = new JLabel("Font Size"); 
     ButtonGroup fontSizeGrp = new ButtonGroup();
     JRadioButton smallButton = new JRadioButton("Small");
+    smallButton.setSelected(true);
+    // set default font values to the small font size
     JRadioButton mediumButton = new JRadioButton("Medium");
     JRadioButton largeButton = new JRadioButton("Large");
     
+    ActionListener fontSizeListener = new ActionListener() {
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        if(e.getSource() == smallButton) {
+          songLyricsTF.setFont(new Font("Arial Nova", Font.BOLD, 16));
+        }
+        else if(e.getSource() == mediumButton) {
+          songLyricsTF.setFont(new Font("Arial Nova", Font.BOLD, 18));
+        }
+        else {
+          songLyricsTF.setFont(new Font("Arial Nova", Font.BOLD, 20));
+        }
+      }
+    };
+
+    smallButton.addActionListener(fontSizeListener);
+    mediumButton.addActionListener(fontSizeListener);
+    largeButton.addActionListener(fontSizeListener);
+
     fontSizeGrp.add(smallButton);
     fontSizeGrp.add(mediumButton);
     fontSizeGrp.add(largeButton);
@@ -133,8 +159,47 @@ public class SongLyricsApp extends JFrame {
     JPanel checkBoxP = new JPanel(new GridLayout(0, 1)); 
     JLabel fontStyleL = new JLabel("Font Style");
     JCheckBox normalButton = new JCheckBox("Normal");
+    normalButton.setSelected(true);
     JCheckBox boldButton = new JCheckBox("Bold");
     JCheckBox italicButton = new JCheckBox("Italic");
+
+    // RESUME HERE
+    // THINK OF THE LOGIC FOR CHECKBOX LISTENERS
+    ItemListener fontStyleListener = new ItemListener() {
+      @Override
+      public void itemStateChanged(ItemEvent e) {
+        if(e.getStateChange() == ItemEvent.SELECTED) {
+          if(e.getSource() == normalButton) {
+            boldButton.setSelected(false);
+            italicButton.setSelected(false);
+          }
+          if(e.getSource() == boldButton) {
+            normalButton.setSelected(false);
+          }
+          if(e.getSource() == italicButton) {
+            normalButton.setSelected(false);
+          }
+        }
+
+        if(e.getStateChange() == ItemEvent.DESELECTED) {
+          // if(e.getSource() == normalButton) {
+          //   System.out.println("normal unselected");
+          // }
+          if(e.getSource() == boldButton) {
+            System.out.println("bold unselected");
+            // when ran, the font becomes normal
+          }
+          if(e.getSource() == italicButton) {
+            System.out.println("italic unselected");
+            // when ran, the font becomes normal
+          }
+        }
+      }
+    };
+
+    normalButton.addItemListener(fontStyleListener);
+    boldButton.addItemListener(fontStyleListener);
+    italicButton.addItemListener(fontStyleListener);
 
     checkBoxP.add(fontStyleL);
     checkBoxP.add(normalButton);
@@ -147,17 +212,6 @@ public class SongLyricsApp extends JFrame {
     songStyleP.add(songPlaylistP, BorderLayout.CENTER);
     songStyleP.add(songStylingP, BorderLayout.EAST);
     // ============================ Setup the Frame ============================
-    // ============================ test visibilty of panels
-    setBackground(Color.black);
-    songLyricsP.setBackground(Color.red);
-
-    songListnDetailsP.setBackground(Color.yellow);
-    songDetailsP.setBackground(Color.pink);
-    songListP.setBackground(Color.black);
-
-    songStyleP.setBackground(Color.green);
-    // test visibilty of panels ============================
-
     add(songLyricsP, BorderLayout.CENTER);
     add(songListnDetailsP, BorderLayout.NORTH);
     add(songStyleP, BorderLayout.SOUTH);
@@ -166,7 +220,7 @@ public class SongLyricsApp extends JFrame {
     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     // setResizable(false);
     setVisible(true);
-  }
+  } // SongLyricsApp constructor
 
   // ensures that only one instance of the songlyricsapp will ever be created
   public static SongLyricsApp getInstance() {
@@ -180,5 +234,5 @@ public class SongLyricsApp extends JFrame {
   public static void main(String[] args) {
     SongLyricsApp.getInstance();
   }
-}
+} // SongLyricsApp class
 
