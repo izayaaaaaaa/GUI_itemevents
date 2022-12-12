@@ -1,12 +1,16 @@
 // IMAGES AND TEXT FILES AREN'T RENDERING ON NETBEANS???
-// FIX THE OVERALL STYLE/UI
+// ADD SCROLL BAR; SETTLE FOR A FIXED SIZE FOR THE TEXT AREA, 
 package musicappfiles;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.awt.image.BufferedImage;
+import java.io.*;
+import java.io.IOException;
+import javax.imageio.ImageIO;
 import javax.swing.*;
-  
-import com.formdev.flatlaf.FlatLightLaf;
+
+import com.formdev.flatlaf.intellijthemes.materialthemeuilite.*;
 
 import musicappfiles.Song.uploadImg;
 
@@ -22,8 +26,8 @@ public class SongLyricsApp extends JFrame {
 
   // Default Font Properties
   int fontStyle = 0; // plain is 0, bold is 1, italics is 2
-  int fontSize = 14;
-  Font font = new Font("Times New Roman", fontStyle, fontSize);
+  int fontSize = 12;
+  Font textArea = new Font("Arial", fontStyle, fontSize);
 
   // Panels of Main Frame
   JPanel songLyricsP, songListnDetailsP, songStyleP;
@@ -31,6 +35,7 @@ public class SongLyricsApp extends JFrame {
   // songLyrics Panel
   String lyrics;
   JTextArea songLyricsTF;
+  JScrollPane songScroll;
 
   // songListnDetails Panel
   JPanel songDetailsP, songListP; 
@@ -44,11 +49,7 @@ public class SongLyricsApp extends JFrame {
   JComboBox<String> songListCB;
 
   // songStyle Panel
-  JPanel songPlaylistP, songStylingP; 
-
-  JPanel playlistDetailsP;
-  JLabel playlistName, playlistDesc;
-  JLabel playlistImg;
+  JPanel songStylingP; 
   
   JPanel radioBoxP, checkBoxP;
 
@@ -60,31 +61,39 @@ public class SongLyricsApp extends JFrame {
   JCheckBox normalButton, boldButton, italicButton;
   
   private SongLyricsApp() { // SongLyricsApp Constructor
-    FlatLightLaf.setup();
+    FlatGitHubDarkContrastIJTheme.setup();
 
-    songLyricsP = new JPanel();
+    songLyricsP = new JPanel(new BorderLayout());
     songListnDetailsP = new JPanel(new BorderLayout());
     songStyleP = new JPanel(new BorderLayout());
 
+    songLyricsP.setBorder(BorderFactory.createEmptyBorder(20, 10, 0, 50));
+    songLyricsP.setPreferredSize(new Dimension(600, 700));
+
+    songListnDetailsP.setBorder(BorderFactory.createEmptyBorder(10, 10, 0, 10));
+    songStyleP.setBorder(BorderFactory.createEmptyBorder(0, 10, 10, 10));
+
     // ======================================== songLyrics Panel =========================================
     lyrics = song1.getSongLyrics();
-    songLyricsTF = new JTextArea(lyrics, 35, 50);
-    songLyricsTF.setFont(font);
+    songLyricsTF = new JTextArea(lyrics);
 
-    // set fixed size of panel
-    // transparent song lyrics bg?
-    // variable based display text of text area
-    // SHOULD NOT BE EDITABLE
+    songLyricsTF.setFont(textArea);
+    songLyricsTF.setEditable(false);
+    // scroll pane should have size that adjusts; transparent vertical scroll; no horizontal scroll
+    // songScroll = new JScrollPane(songLyricsTF);
+    // songScroll.setVerticalScrollBarPolicy ( ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS );
+    // text spacing?
 
-    songLyricsP.add(songLyricsTF);
-
+    // songLyricsP.add(songScroll, BorderLayout.EAST);
+    songLyricsP.add(songLyricsTF, BorderLayout.EAST);
     // ======================================== songListnDetails Panel =========================================
+    // =========== definition
     songDetailsP = new JPanel(new BorderLayout());
 
     songInfoP = new JPanel(new BorderLayout());
     songNameL = new JLabel(song1.getSongName());
     songArtistL = new JLabel(song1.getArtistName());
-
+    
     songPhotoP = new JPanel();
     songPhoto = song1.songImage;
     
@@ -131,6 +140,15 @@ public class SongLyricsApp extends JFrame {
       }
     }); // songListCB itemlistener
 
+    // =========== customization
+    songNameL.setFont(new Font("Verdana", 1, 16));
+    songArtistL.setFont(new Font("Verdana", 0, 12));
+
+    songNameL.setBorder(BorderFactory.createEmptyBorder(20, 0, 0, 0));
+    songArtistL.setBorder(BorderFactory.createEmptyBorder(0, 0, 40, 0));
+    songPhotoP.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 15));
+
+
     songInfoP.add(songNameL, BorderLayout.CENTER);
     songInfoP.add(songArtistL, BorderLayout.SOUTH);
     songPhotoP.add(songPhoto);
@@ -143,16 +161,7 @@ public class SongLyricsApp extends JFrame {
     songListnDetailsP.add(songListP, BorderLayout.NORTH);
 
     // ======================================== songStyle Panel =========================================
-    songPlaylistP = new JPanel(new BorderLayout());
-    
-    playlistDetailsP = new JPanel(new BorderLayout());
-    playlistName = new JLabel("Always");
-    playlistDesc = new JLabel("Created by: Francyn Macadangdang");
-    
-    playlistImg = new JLabel("tester playlist img"); // use the icon component?
-
     songStylingP = new JPanel();
-    // ADD THE STUPID BUTTON EVENT LISTENERS
     radioBoxP = new JPanel(new GridLayout(0, 1));
     fontSizeL = new JLabel("Font Size"); 
     fontSizeGrp = new ButtonGroup();
@@ -169,13 +178,13 @@ public class SongLyricsApp extends JFrame {
       @Override
       public void actionPerformed(ActionEvent e) {
         if(e.getSource() == smallButton) {
-          changeFont(14);
+          changeFont(12);
         }
         else if(e.getSource() == mediumButton) {
-          changeFont(16);
+          changeFont(14);
         }
         else if (e.getSource() == largeButton) {
-          changeFont(18);
+          changeFont(16);
         }
       }
     };
@@ -212,8 +221,8 @@ public class SongLyricsApp extends JFrame {
 
         if(boldButton.isSelected() == true && italicButton.isSelected() == true) {
           fontStyle = 1 | 2; // two styles are applied at the same time
-          font = new Font("Times New Roman", fontStyle, fontSize);
-          songLyricsTF.setFont(font); 
+          textArea = new Font("Times New Roman", fontStyle, fontSize);
+          songLyricsTF.setFont(textArea); 
         }
 
         if(e.getStateChange() == ItemEvent.DESELECTED) {
@@ -244,11 +253,6 @@ public class SongLyricsApp extends JFrame {
     boldButton.addItemListener(fontStyleListener);
     italicButton.addItemListener(fontStyleListener);
     
-    playlistDetailsP.add(playlistName, BorderLayout.CENTER);
-    playlistDetailsP.add(playlistDesc, BorderLayout.SOUTH);
-    songPlaylistP.add(playlistDetailsP, BorderLayout.CENTER);
-    songPlaylistP.add(playlistImg, BorderLayout.WEST);
-
     radioBoxP.add(fontSizeL);
     radioBoxP.add(smallButton);
     radioBoxP.add(mediumButton);
@@ -260,8 +264,7 @@ public class SongLyricsApp extends JFrame {
     songStylingP.add(radioBoxP);
     songStylingP.add(checkBoxP);
 
-    songStyleP.add(songPlaylistP, BorderLayout.CENTER);
-    songStyleP.add(songStylingP, BorderLayout.EAST);
+    songStyleP.add(songStylingP, BorderLayout.WEST);
     
     // ======================================== SETUP THE FRAME =========================================
     add(songLyricsP, BorderLayout.CENTER);
@@ -283,13 +286,13 @@ public class SongLyricsApp extends JFrame {
     return firstInstance;
   }
 
-  public void changeFont(int change) {
-    if(change == 14) {
+  private void changeFont(int change) {
+    if(change == 12) {
+      fontSize = 12; 
+    } else if (change == 14) {
       fontSize = 14; 
     } else if (change == 16) {
-      fontSize = 16; 
-    } else if (change == 18) {
-      fontSize = 18;
+      fontSize = 16;
     } 
 
     else if (change == 0) {
@@ -300,11 +303,11 @@ public class SongLyricsApp extends JFrame {
       fontStyle = 2; 
     }
 
-    font = new Font("Times New Roman", fontStyle, fontSize);
-    songLyricsTF.setFont(font);
+    textArea = new Font("Times New Roman", fontStyle, fontSize);
+    songLyricsTF.setFont(textArea);
   }
 
-  public void changeSongPic(uploadImg songVer) {
+  private void changeSongPic(uploadImg songVer) {
     songPhotoP.remove(songPhoto);
     songPhoto = songVer;
     songPhotoP.add(songPhoto);
@@ -315,3 +318,30 @@ public class SongLyricsApp extends JFrame {
   }
 } // SongLyricsApp Constructor
 
+class uploadPic extends Component {  
+  BufferedImage img;
+
+  // place the image on the panel
+  public void paint(Graphics p) {  
+    p.drawImage(img, 0, 0, null);  
+  }
+
+  // gets the image that will be placed on panel
+  public uploadPic(String pathfile) {  
+    try {  
+      img = ImageIO.read(new File(pathfile));  
+    }   
+    catch (IOException ex) {  
+      ex.printStackTrace();  
+    }  
+  }
+
+  // sets the dimension of the image regardless if there is an actual image
+  public Dimension getPreferredSize() {
+    if (img == null) {
+          return new Dimension(100,100);
+    } else {
+        return new Dimension(img.getWidth(null), img.getHeight(null));
+    }
+  }
+}
